@@ -4,6 +4,9 @@ HttpTestServer
 .. image:: https://travis-ci.org/grupotaric/httptestserver.svg?branch=master
     :target: https://travis-ci.org/grupotaric/httptestserver
 
+.. image:: https://badge.fury.io/py/httptestserver.svg
+    :target: http://badge.fury.io/py/httptestserver
+
 HTTP/HTTPS server which can be run within a Python process. Runs in a
 different thread along with the application exposing a simple thread-safe API,
 so the calling code can control of how the server behaves.
