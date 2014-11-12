@@ -1,11 +1,17 @@
 HttpTestServer
 **************
 
-.. image:: https://travis-ci.org/grupotaric/httptestserver.svg?branch=master
-    :target: https://travis-ci.org/grupotaric/httptestserver
-
 .. image:: https://badge.fury.io/py/httptestserver.svg
     :target: http://badge.fury.io/py/httptestserver
+    :alt: Latest Pypi version
+
+.. image:: https://readthedocs.org/projects/httptestserver/badge/?version=latest
+    :target: https://readthedocs.org/projects/httptestserver/?badge=latest
+    :alt: Documentation Status
+
+.. image:: https://travis-ci.org/grupotaric/httptestserver.svg?branch=master
+    :target: https://travis-ci.org/grupotaric/httptestserver
+    :alt: Last build status
 
 HTTP/HTTPS server which can be run within a Python process. Runs in a
 different thread along with the application exposing a simple thread-safe API,
