@@ -1,6 +1,8 @@
 Changes
 =======
 
+List of all the changes throughout different versions.
+
 .. changelog::
     :version: 0.1.0
     :released: 2014-11-12

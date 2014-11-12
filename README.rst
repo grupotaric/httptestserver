@@ -9,12 +9,51 @@ HttpTestServer
 
 HTTP/HTTPS server which can be run within a Python process. Runs in a
 different thread along with the application exposing a simple thread-safe API,
-so the calling code can control of how the server behaves.
+so the calling code can control how the server behaves.
 
 Sometimes integration tests cannot do with mocking the ``socket.socket``
 function avoiding real networking, this partially solves that problem by
-providing a real server which is as easy to use and can perform real network
+providing a real server which is easy to use and can perform real network
 communication in a controlled and reliable way.
+
+Features:
+
+* Runs in a different thread at the same time of your tests.
+* Control server responses and behaviour.
+* Access to server internal state and data after or during the request.
+* HTTPs support, it bundles a self-signed certificate useful for testing.
+* History of all server performed requests/responses.
+
+
+Supports ``python`` *2.7* and *3.4*
+
+
+Functions
+---------
+
+Functions that return a running server instance:
+
+.. code:: python
+
+    >>> server = start_server()
+    >>> server.host
+    '127.0.0.1'
+
+
+Or context managers for limited use:
+
+.. code:: python
+
+    >>> with http_server() as server:
+    ...     server.host
+    '127.0.0.1'
+
+
+Mixin classes
+-------------
+
+Mixins that include an working server as ``self.server``.
+
 
 .. code:: python
 
@@ -60,49 +99,6 @@ communication in a controlled and reliable way.
 
             assert len(self.server.history) == 2
             assert self.server.history[-1]['path'] == self.default_url + '2'
-
-
-Features:
-
-* Runs in a different thread at the same time of your tests.
-* Control server responses and behaviour.
-* Access to server internal state and data after or during the request.
-* HTTPs support, it bundles a self-signed certificate useful for testing.
-* History of all server performed requests/responses.
-
-
-Api
-===
-
-Functions which return a running server instance:
-
-.. autofunction:: start_server
-.. autofunction:: start_ssl_server
-
-Context managers for short in-place usage:
-
-.. autofunction:: http_server
-.. autofunction:: https_server
-
-The :class:`Server` class, with all the available functionality:
-
-.. autoclass:: Server
-    :members:
-
-
-The default handler is :class:`Handler` but it can be subclassed and extended:
-
-.. autoclass:: httptestserver.server.Handler
-    :members:
-
-Some mixings to start the server and use it directly from tests.
-
-.. autoclass:: HttpServerTest
-    :members:
-
-
-.. autoclass:: HttpsServerTest
-    :members:
 
 
 Development
