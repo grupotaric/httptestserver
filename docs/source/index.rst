@@ -26,20 +26,19 @@ The :class:`Server` class, with all the available functionality:
 .. autoclass:: Server
     :members:
 
-
 The default handler is :class:`Handler` but it can be subclassed and extended:
 
 .. autoclass:: httptestserver.server.Handler
     :members:
 
-Some mixings to start the server and use it directly from tests.
+Some mixins to start the server and use it directly from tests.
 
-.. autoclass:: HttpServerTest
+.. autoclass:: HttpTestServer
     :members:
     :undoc-members:
 
 
-.. autoclass:: HttpsServerTest
+.. autoclass:: HttpsTestServer
     :members:
     :undoc-members:
 
@@ -53,4 +52,3 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
-

@@ -4,6 +4,21 @@ Changes
 List of all the changes throughout different versions.
 
 .. changelog::
+    :version: 0.1.1
+    :released: 2014-11-13
+
+    Name update.
+
+    .. change::
+       :tags: feature
+
+       Fixes name incoherence for testing mixins.
+
+       Renames ``HttpServerTest`` to :class:`HttpTestServer`
+       Renames ``HttpsServerTest`` to :class:`HttpsTestServer`
+
+
+.. changelog::
     :version: 0.1.0
     :released: 2014-11-12
 
