@@ -7,5 +7,13 @@ echo "Creating new version: ${NAME} ${VERSION}"
 
 tox
 git tag ${VERSION} -am "Version ${VERSION}"
-python3 setup.py sdist bdist_egg bdist_wheel upload -r pypi
-python2 setup.py bdist_wheel upload -r pypi
+
+echo "Uploading python3 versions to pypi"
+virtualenv env3 --python /usr/bin/python3
+env3/bin/pip install wheel
+env3/bin/python setup.py sdist bdist_wheel upload -r pypi
+
+echo "Sending python2 versions to pypi"
+virtualenv env2 --python /usr/bin/python2
+env2/bin/pip install wheel
+env2/bin/python setup.py bdist_wheel upload -r pypi
