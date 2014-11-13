@@ -64,9 +64,9 @@ Mixins that include an working server as ``self.server``.
 .. code:: python
 
     import requests
-    from httptestserver import HttpsServerTest
+    from httptestserver import HttpsTestServer
 
-    class TestApplication(HttpsServerTest):
+    class TestApplication(HttpsTestServer):
 
         # Test what was actually get by the server
         def test_it_should_send_headers(self):
