@@ -3,7 +3,7 @@
 from hamcrest import *
 from nose.tools import assert_raises
 
-from httptestserver import (HttpServerTest, HttpsServerTest, Server,
+from httptestserver import (HttpTestServer, HttpsTestServer, Server,
                             http_server, https_server)
 
 import requests
@@ -220,12 +220,12 @@ class HttpErrorsMixin(object):
 
 
 # actual test implementations
-class TestHttp(HttpServerTest, ServerTestMixin, DataMixin, MethodsMixin,
+class TestHttp(HttpTestServer, ServerTestMixin, DataMixin, MethodsMixin,
                ConnectionMixin, HttpErrorsMixin):
     """Test http server"""
 
 
-class TestHttps(HttpsServerTest, ServerTestMixin, DataMixin,
+class TestHttps(HttpsTestServer, ServerTestMixin, DataMixin,
                 MethodsMixin, ConnectionMixin, HttpErrorsMixin):
     """Test https server"""
 
