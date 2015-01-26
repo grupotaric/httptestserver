@@ -88,10 +88,10 @@ class Handler(BaseHTTPRequestHandler):
         # Create and send a http response
         self.update_state()        # Save server current state
         self.read_content()        # Read request body
+        self.save_history()        # Save current state in history
         self.process_request()     # Process received request
         self.send_headers()        # Send response headers
         self.send_content()        # Send response body
-        self.save_history()        # Save current state in history
         self.finish_request()      # Finish headers and response
 
     def read_content(self):

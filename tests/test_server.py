@@ -48,11 +48,11 @@ class DataMixin(object):
 
     def test_it_should_have_all_requests_stored(self):
         self.request('GET', self.server.url('/first'))
-        self.request('POST', self.server.url('/second'))
+        self.request('POST', self.server.url('/second'), data=b'data')
 
         assert_that(self.server.history, contains(
             has_entries({'command': 'GET', 'path': '/first'}),
-            has_entries({'command': 'POST', 'path': '/second'})
+            has_entries({'command': 'POST', 'path': '/second', 'body': b'data'})
         ))
 
 
