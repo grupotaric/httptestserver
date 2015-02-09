@@ -37,7 +37,7 @@ DEFAULT_CERTFILE = here('./server.pem')  # cert + private key
 lock = RLock()
 
 
-log = logging.getLogger('httptestserver')
+log = logging.getLogger('httptestserver.http')
 
 
 def start_server(host=None, port=None):
