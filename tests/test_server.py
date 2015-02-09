@@ -14,9 +14,6 @@ class ServerTestMixin(object):
         kwargs['verify'] = kwargs.get('verify', False)
         return requests.request(*args, **kwargs)
 
-    def setup(self):
-        self.server.reset()
-
 
 class DataMixin(object):
     def test_it_should_send_headers(self):

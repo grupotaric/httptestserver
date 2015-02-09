@@ -21,6 +21,9 @@ class ServerBase(object):
         """Default url for testing"""
         return self.url(self.default_path)
 
+    def setup(self):
+        self.server.reset()
+
 
 class HttpTestServer(ServerBase):
     """Mixin class for testing using an http server"""
