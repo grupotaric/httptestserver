@@ -44,7 +44,7 @@ def start_server(host=None, port=None):
     """Create a started HTTP server listening in *host*:*port*
 
     :param host: *(default: 127.0.0.1)* Host for the server to listen.
-    :param port: *default: random)* Port of the server to listen (should not be in use).
+    :param port: *(default: random)* Port of the server to listen (should not be in use).
     :returns: A created and started :class:`Server`
     """
     return Server.start_server(host or DEFAULT_HOST, port or DEFAULT_PORT)
@@ -161,7 +161,7 @@ class Server(ThreadingMixIn, HTTPServer, Thread):
     """HTTP Server
 
     Starts in a child thread.
-    Thread stops and closes when the caller does.
+    Thread stops and closes when the parent process does.
     Handles each request on a new thread, *forks* on each request.
 
     Server state after each request can be checked as a `dict` through the
@@ -202,7 +202,7 @@ class Server(ThreadingMixIn, HTTPServer, Thread):
         HTTPServer.__init__(self, (host, port), handler)
         self._data = {}
         self._history = []
-        self.daemon = True  # se cierra el solo al terminar proceso
+        self.daemon = True  # finish along with parent process
         self.scheme = scheme
 
     @classmethod

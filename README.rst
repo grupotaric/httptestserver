@@ -13,23 +13,23 @@ HttpTestServer
     :target: https://travis-ci.org/grupotaric/httptestserver
     :alt: Last build status
 
-HTTP/HTTPS server which can be run within a Python process. Runs in a
-different thread along with the application exposing a simple thread-safe API,
-so the calling code can control how the server behaves.
+HTTP(s) and SMTP servers which can be run within a Python process. Serving
+from different thread along with application and tests, exposing a simple
+thread-safe API, so the calling code can control how the server behaves.
 
 Sometimes integration tests cannot do with mocking the ``socket.socket``
-function avoiding real networking, this partially solves that problem by
+function avoiding real networking, this partially solves the problem by
 providing a real server which is easy to use and can perform real network
 communication in a controlled and reliable way.
 
 Features:
 
-* Runs in a different thread at the same time of your tests.
+* Runs in a different thread along with your tests.
 * Control server responses and behaviour.
 * Access to server internal state and data after or during the request.
 * HTTPs support, it bundles a self-signed certificate useful for testing.
-* History of all server performed requests/responses.
-
+* SMTP support which will collect and parse all your outgoing email.
+* History of all performed requests/responses.
 
 Supports ``python`` *2.7* and *3.4*
 

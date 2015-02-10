@@ -5,7 +5,7 @@ from .http_server import start_server, start_ssl_server
 
 
 class ServerBase(object):
-    """Base class for all the server mixins"""
+    """Base class for http server mixins"""
 
     server = None
     """Class level server instance"""
@@ -27,7 +27,7 @@ class ServerBase(object):
 
 
 class HttpTestServer(ServerBase):
-    """Mixin class for testing using an http server"""
+    """Mixin class for testing using a http server"""
     options = {}
 
     @classmethod
@@ -36,7 +36,7 @@ class HttpTestServer(ServerBase):
 
 
 class HttpsTestServer(ServerBase):
-    """Mixin class for testing using an https server"""
+    """Mixin class for testing using a https server"""
     options = {'verify': False}
 
     @classmethod

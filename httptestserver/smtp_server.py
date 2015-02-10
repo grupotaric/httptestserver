@@ -7,6 +7,11 @@ SMTP python server which can be controlled from a different thread.
 
 .. code::
     >>> server = start_smtp_server()
+    >>> server.start()
+    >>> sendemail('from@host.com', ['to@away.com'], 'Message...')
+    >>> server.data['message']['subject']
+    'Gotcha!'
+    >>> server.close()
 """
 import smtpd
 import logging
@@ -49,6 +54,20 @@ def smtp_server(*args, **kwargs):
 
 
 class SmtpServer(smtpd.SMTPServer, Thread):
+    """SMTP Server
+
+    Starts in a child thread as :class:`Server` does.
+
+    Server state can be checked through de :attr:`SmtpServer.data` attribute
+    after each request. See the attribute for a list of all available data.
+
+    When several messages are sent at a time, the server state is still
+    reachable through the :attr:`Server.history` attribute.
+
+    *About multithreading:* The :mod:`asyncore` stdlib module that powers the
+    python SMTP server does not quite like to be spawned in a different
+    thread, feel free to open an issue in the project if you experience concurrency errors.
+    """
     def __init__(self, host, port):
         Thread.__init__(self)
         smtpd.SMTPServer.__init__(self, (host, port), None)
@@ -151,4 +170,3 @@ class SmtpServer(smtpd.SMTPServer, Thread):
 
     def __getattribute__(self, attr):
         return object.__getattribute__(self, attr)
-
