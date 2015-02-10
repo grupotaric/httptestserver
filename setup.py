@@ -9,11 +9,11 @@ README = open(os.path.join(here, 'README.rst')).read()
 
 setup(
     name='httptestserver',
-    version='0.1.1',
+    version='0.2.0',
     author='Javier Santacruz',
     author_email='javier.santacruz.lc@gmail.com',
     long_description=README,
-    description='HTTP and HTTPS testing server',
+    description='HTTP(s) and SMTP testing server',
     include_package_data=True,
     packages=find_packages(),
     install_requires=[],
