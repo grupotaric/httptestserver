@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+from .smtp_server import start_smtp_server
 from .http_server import start_server, start_ssl_server
 
 
@@ -41,3 +42,11 @@ class HttpsTestServer(ServerBase):
     @classmethod
     def setupClass(cls):
         cls.server = start_ssl_server()
+
+
+class SmtpTestServer(ServerBase):
+    """Mixin class for testing using a smtp server"""
+
+    @classmethod
+    def setupClass(cls):
+        cls.server = start_smtp_server()
