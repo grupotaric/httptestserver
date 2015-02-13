@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import time
 import smtplib
 import email.message
 
@@ -64,6 +65,10 @@ class TestSmtp(SmtpTestServer):
 
 
 class TestServerContext(object):
+    def test_it_should_give_a_server(self):
+        with smtp_server() as server:
+            assert_that(server, is_(instance_of(SmtpServer)))
+
     def test_it_should_start_server(self):
         with smtp_server() as server:
             assert_that(server.accepting, is_(True))
@@ -72,4 +77,5 @@ class TestServerContext(object):
         with smtp_server() as server:
             pass
 
-        assert_that(server.accepting, is_(False))
+        time.sleep(0.02)  # wait for the server to finish
+        assert_that(server.is_alive(), is_(False))

@@ -50,7 +50,7 @@ def smtp_server(*args, **kwargs):
     """
     server = start_smtp_server(*args, **kwargs)
     yield server
-    server.close()
+    server.stop()
 
 
 class SmtpServer(smtpd.SMTPServer, Thread):
@@ -73,6 +73,7 @@ class SmtpServer(smtpd.SMTPServer, Thread):
         smtpd.SMTPServer.__init__(self, (host, port), None)
         self._data = {}
         self._history = []
+        self._continue = True
         self.daemon = True  # finish along with parent process
 
     @classmethod
@@ -160,11 +161,17 @@ class SmtpServer(smtpd.SMTPServer, Thread):
         """Current binded host"""
         return self.socket.getsockname()[1]
 
+    def stop(self):
+        """Stops the server thread"""
+        self._continue = False
+        self.close()
+
     def run(self):
         try:
             log.info('Starting server')
-            asyncore.loop()
-            host, port = self.host, self.port
+            while(self._continue):
+                host, port = self.host, self.port
+                asyncore.loop(timeout=0.01, count=1)
         finally:
             log.info('Stopped server %s:%d', host, port)
 
