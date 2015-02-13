@@ -235,9 +235,21 @@ class TestContexts(object):
                 has_property('scheme', is_('http'))
             ))
 
+    def test_it_stops_http_server(self):
+        with http_server() as server:
+            assert_that(server.is_alive(), is_(True))
+
+        assert_that(server.is_alive(), is_(False))
+
     def test_it_starts_https_server(self):
         with https_server() as server:
             assert_that(server, all_of(
                 is_(instance_of(Server)),
                 has_property('scheme', is_('https'))
             ))
+
+    def test_it_stops_https_server(self):
+        with https_server() as server:
+            assert_that(server.is_alive(), is_(True))
+
+        assert_that(server.is_alive(), is_(False))

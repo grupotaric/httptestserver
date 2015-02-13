@@ -310,6 +310,10 @@ class Server(ThreadingMixIn, HTTPServer, Thread):
         """
         return "{}://{}:{}{}".format(self.scheme, self.host, self.port, path)
 
+    def stop(self):
+        """Stops the server thread"""
+        self.shutdown()
+
     def run(self):
         self.serve_forever()
 
@@ -327,6 +331,7 @@ def http_server(*args, **kwargs):
     """
     server = start_server(*args, **kwargs)
     yield server
+    server.stop()
 
 
 @contextlib.contextmanager
@@ -342,3 +347,4 @@ def https_server(*args, **kwargs):
     """
     server = start_ssl_server(*args, **kwargs)
     yield server
+    server.stop()
