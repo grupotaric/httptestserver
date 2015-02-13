@@ -170,10 +170,9 @@ class SmtpServer(smtpd.SMTPServer, Thread):
         try:
             log.info('Starting server')
             while(self._continue):
-                host, port = self.host, self.port
                 asyncore.loop(timeout=0.01, count=1)
         finally:
-            log.info('Stopped server %s:%d', host, port)
+            log.info('Stopped server')
 
     def __getattribute__(self, attr):
         return object.__getattribute__(self, attr)

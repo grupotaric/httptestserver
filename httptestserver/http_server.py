@@ -315,7 +315,11 @@ class Server(ThreadingMixIn, HTTPServer, Thread):
         self.shutdown()
 
     def run(self):
-        self.serve_forever()
+        try:
+            log.info('Starting server')
+            self.serve_forever()
+        finally:
+            log.info('Stopping server at: %s:%d', self.host, self.port)
 
 
 @contextlib.contextmanager
