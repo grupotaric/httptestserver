@@ -25,6 +25,10 @@ class ServerBase(object):
     def setup(self):
         self.server.reset()
 
+    @classmethod
+    def teardownClass(cls):
+        cls.server.stop()
+
 
 class HttpTestServer(ServerBase):
     """Mixin class for testing using a http server"""

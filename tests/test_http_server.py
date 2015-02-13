@@ -227,6 +227,18 @@ class TestHttps(HttpsTestServer, ServerTestMixin, DataMixin,
     """Test https server"""
 
 
+class TestServerBase(object):
+    def setup(self):
+        self.server.data['test'] = True
+
+        super(TestServerBase, self).setup()
+
+        assert_that(self.server.data, is_({}))
+
+    def teardownClass(cls):
+        pass
+
+
 class TestContexts(object):
     def test_it_starts_http_server(self):
         with http_server() as server:
