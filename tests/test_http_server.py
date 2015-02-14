@@ -1,11 +1,10 @@
 # -*- coding: utf-8 -*-
-
+import time
 from hamcrest import *
 from nose.tools import assert_raises
 
 from httptestserver import (HttpTestServer, HttpsTestServer, Server,
                             http_server, https_server)
-
 import requests
 
 
@@ -227,18 +226,6 @@ class TestHttps(HttpsTestServer, ServerTestMixin, DataMixin,
     """Test https server"""
 
 
-class TestServerBase(object):
-    def setup(self):
-        self.server.data['test'] = True
-
-        super(TestServerBase, self).setup()
-
-        assert_that(self.server.data, is_({}))
-
-    def teardownClass(cls):
-        pass
-
-
 class TestContexts(object):
     def test_it_starts_http_server(self):
         with http_server() as server:
@@ -251,6 +238,7 @@ class TestContexts(object):
         with http_server() as server:
             assert_that(server.is_alive(), is_(True))
 
+        time.sleep(0.01)
         assert_that(server.is_alive(), is_(False))
 
     def test_it_starts_https_server(self):
@@ -264,4 +252,5 @@ class TestContexts(object):
         with https_server() as server:
             assert_that(server.is_alive(), is_(True))
 
+        time.sleep(0.01)
         assert_that(server.is_alive(), is_(False))
