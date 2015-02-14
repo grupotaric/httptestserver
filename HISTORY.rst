@@ -4,8 +4,40 @@ Changes
 List of all the changes throughout different versions.
 
 .. changelog::
-    :version: 0.1.1
-    :released: 2014-11-13
+    :version: 0.2.1
+    :released: 2014-02-14
+
+    Adds server thread stopping
+
+    .. change::
+       :tags: feature
+
+       New ``stop`` methods for server classes.
+
+       Adds :meth:`.Server.stop` method.
+       Adds :meth:`.SmtpServer.stop` method.
+
+    .. change::
+        :tags: error
+
+       Fixes error on :class:`.SmtpServer` exit.
+
+    .. change::
+        :tags: error
+
+       Fixes thread stopping in server context managers
+
+    .. change::
+        :tags: feature
+
+       Stops servers after class teardown in testing classes
+
+       Adds :meth:`.testing.ServerBase.teardownClass` method.
+
+
+.. changelog::
+    :version: 0.2.0
+    :released: 2015-02-10
 
     Adds initial SMTP support
 
