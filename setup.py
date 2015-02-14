@@ -9,7 +9,7 @@ README = open(os.path.join(here, 'README.rst')).read()
 
 setup(
     name='httptestserver',
-    version='0.2.0',
+    version='0.2.1',
     author='Javier Santacruz',
     author_email='javier.santacruz.lc@gmail.com',
     long_description=README,
