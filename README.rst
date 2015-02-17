@@ -31,7 +31,7 @@ Features:
 * SMTP support which will collect and parse all your outgoing email.
 * History of all performed requests/responses.
 
-Supports ``python`` *2.7* and *3.4*
+Supports ``python`` *2.7* *3.2*, *3.3* and *3.4*
 
 
 Functions
