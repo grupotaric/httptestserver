@@ -98,14 +98,14 @@ class Handler(BaseHTTPRequestHandler):
         # Read request body (if any)
         if self.command in ('POST', 'PUT', 'PATCH'):
             content_length = self.headers['Content-Length']
-            log.info(u'Content-Length: %s', content_length)
+            log.info('Content-Length: %s', content_length)
             self.server.data['body'] = self.rfile.read(int(content_length))
 
     def process_request(self):
         # Simulate timeouts
         timeout = self.server.data.get('response_timeout')
         if timeout is not None:
-            log.info(u'Server sleeping for: %d s', timeout)
+            log.info('Server sleeping for: %d s', timeout)
             time.sleep(timeout)
 
     def send_headers(self):
@@ -117,7 +117,7 @@ class Handler(BaseHTTPRequestHandler):
         # Add user defined headers
         headers = self.server.data.get('response_headers', ())
         for field, content in iteritems(headers):
-            log.info(u'Server setting response header %s: %s', field, content)
+            log.info('Server setting response header %s: %s', field, content)
             self.send_header(field, content)
 
         self.end_headers()
@@ -125,7 +125,7 @@ class Handler(BaseHTTPRequestHandler):
     def send_content(self):
         response_content = self.server.data.get('response_content')
         if response_content is not None:
-            log.info(u'Server sending content: %d bytes', len(response_content))
+            log.info('Server sending content: %d bytes', len(response_content))
             self.wfile.write(response_content)
 
     def finish_request(self):

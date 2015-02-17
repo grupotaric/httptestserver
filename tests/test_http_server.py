@@ -16,14 +16,14 @@ class ServerTestMixin(object):
 
 class DataMixin(object):
     def test_it_should_send_headers(self):
-        headers = {u'key': u'value'}
+        headers = {'key': 'value'}
 
         self.request('GET', self.default_url, headers=headers)
 
         assert_that(self.server.data['headers'], has_entries(headers))
 
     def test_it_should_send_multiple_valued_headers(self):
-        headers = dict([(u'key', u'value')] * 50)
+        headers = dict([('key', 'value')] * 50)
 
         self.request('GET', self.default_url, headers=headers)
 
