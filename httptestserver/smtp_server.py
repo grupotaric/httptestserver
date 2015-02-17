@@ -152,6 +152,12 @@ class SmtpServer(smtpd.SMTPServer, Thread):
             return self._history
 
     @property
+    def inbox(self):
+        """List of parsed :class:`.message.Message` in order of arrival"""
+        with lock:
+            return [entry['message'] for entry in self._history]
+
+    @property
     def host(self):
         """Current binded host"""
         return self.socket.getsockname()[0]

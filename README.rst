@@ -54,6 +54,12 @@ Or context managers for limited use:
     ...     server.host
     '127.0.0.1'
 
+.. code:: python
+
+    >>> with smtp_server() as server:
+    ...     server.inbox
+    []
+
 
 Mixin classes
 -------------

@@ -5,7 +5,7 @@ import smtplib
 import email.message
 
 from hamcrest import (assert_that, is_, instance_of, greater_than,
-                      has_entries, contains)
+                      has_entries, contains, contains_string)
 
 from httptestserver import SmtpServer, SmtpTestServer, smtp_server
 from httptestserver.smtp_server import DEFAULT_HOST, DEFAULT_PORT
@@ -48,6 +48,22 @@ class TestSmtp(SmtpTestServer):
             self.is_message(message='message 1'),
             self.is_message(message='message 2')
         ))
+
+    def test_it_should_store_messages_in_inbox(self):
+        self.send_email(message='message 1')
+
+        assert_that(self.server.inbox,
+                    contains(instance_of(email.message.Message)))
+
+    def test_it_should_store_in_inbox_in_order(self):
+        self.send_email(message='message 1')
+        self.send_email(message='message 2')
+
+        assert_that(self.server.inbox[0].as_string(),
+                    contains_string('message 1'))
+        assert_that(self.server.inbox[1].as_string(),
+                    contains_string('message 2'))
+
 
     def is_message(self, sender=SENDER, recipients=RECIPIENTS, message=MESSAGE):
         return has_entries({

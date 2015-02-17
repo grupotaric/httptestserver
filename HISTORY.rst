@@ -4,6 +4,19 @@ Changes
 List of all the changes throughout different versions.
 
 .. changelog::
+    :version: 0.2.2
+    :released: 2014-02-
+
+    New :attr:`.SmtpServer.inbox` attribute and some fixes.
+
+
+    .. change::
+       :tags: feature
+
+       Adds :attr:`.SmtpServer.inbox` attribute to :class:`.SmtpServer` class.
+
+
+.. changelog::
     :version: 0.2.1
     :released: 2014-02-14
 
