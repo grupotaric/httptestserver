@@ -84,10 +84,10 @@ class DataMixin(object):
 
 
 class MethodsMixin(object):
-    """Tests sobre metodos/verbos HTTP
+    """Test HTTP verbs/methods
 
-    Lista de metodos http
-    Ver: http://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html
+    HTTP methods list:
+    See: http://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html
     """
     def test_it_should_send_GET_requests(self):
         self.request('GET', self.default_url)
@@ -136,11 +136,11 @@ class MethodsMixin(object):
 
 
 class ConnectionMixin(object):
-    """Tests sobre el envio de datos a traves de la conexion"""
+    """Test real client sending data through a connection"""
 
     def test_it_should_raise_timeout_if_response_delays(self):
-        # Cuidado con este test, la granularidad del timeout
-        # es en segundos y no en milisegundos
+        # Beware, this test needs to have at least 1s granularity
+        # due tu Windows time functions work in seconds
         self.server.data['response_timeout'] = 2
 
         with assert_raises(requests.exceptions.Timeout):
@@ -179,7 +179,7 @@ class ConnectionMixin(object):
 
 
 class HttpErrorsMixin(object):
-    """Tests sobre errores HTTP devueltos por el servidor"""
+    """Tests HTTP server errors"""
 
     def test_it_should_return_user_error_codes(self):
         expected_status = 404

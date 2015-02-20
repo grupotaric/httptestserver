@@ -104,8 +104,6 @@ Mixins that include an working server as ``self.server``.
 
         # Access to server's requests/responses history
         def test_it_should_make_two_requests(self):
-            self.server.reset()
-
             requests.get(self.default_url)
             requests.get(self.default_url + '2')
 
