@@ -4,16 +4,39 @@ Changes
 List of all the changes throughout different versions.
 
 .. changelog::
-    :version: 0.2.2
-    :released: 2014-02-
+    :version: 0.3.0
+    :released: 2014-02-20
 
-    New :attr:`.SmtpServer.inbox` attribute and some fixes.
-
+    Api improvements through the :attr:`.Server.hooks` system and
+    :attr:`.SmtpServer.inbox` attribute.
 
     .. change::
        :tags: feature
 
        Adds :attr:`.SmtpServer.inbox` attribute to :class:`.SmtpServer` class.
+
+    .. change::
+        :tags: feature
+
+        Adds :attr:`.Server.hooks` system:
+
+        - :attr:`.Server.hooks`
+        - :meth:`.Server.register_hook`
+        - :meth:`.Server.process_hook`
+
+        This allows the user to register its own functions to control how the
+        http server controls and responds to the client.
+
+    .. change::
+        :tags: feature
+
+        User data set in :attr:`.Server.data` attribute (``response_*`` keys),
+        can now be a callable that returns the value.
+
+    .. change::
+        :tags: feature
+
+        Adds support for Python 3.2 and 3.3
 
 
 .. changelog::
