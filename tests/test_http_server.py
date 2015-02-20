@@ -51,6 +51,37 @@ class DataMixin(object):
             has_entries({'command': 'POST', 'path': '/second', 'body': b'data'})
         ))
 
+    def test_it_should_read_user_config(self):
+        user_data = {
+            'response_timeout': 0.01,
+            'response_status': 201,
+            'response_headers': {'key': 'value'},
+            'response_content': b'content',
+            'response_clear': True,
+        }
+        self.server.data.update(user_data)
+
+        self.request('GET', self.default_url)
+
+        assert_that(self.server.history[0], has_entries(user_data))
+
+    def test_it_should_read_user_config_from_callable(self):
+        user_data = {
+            'response_timeout': 0.01,
+            'response_status': 201,
+            'response_headers': {b'key': b'value'},
+            'response_content': b'content',
+            'response_clear': True,
+        }
+        self.server.data.update({k: self.fun(v) for k, v in user_data.items()})
+
+        self.request('GET', self.default_url)
+
+        assert_that(self.server.history[0], has_entries(user_data))
+
+    def fun(self, value):
+        return lambda: value
+
 
 class MethodsMixin(object):
     """Tests sobre metodos/verbos HTTP

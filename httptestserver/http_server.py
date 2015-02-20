@@ -272,6 +272,9 @@ class Server(ThreadingMixIn, HTTPServer, Thread):
 
         response_reset
             `True` if server state should be totally reset after the response.
+
+        value might be a callable, in which case, it is inmediately called
+        with no arguments.
         """
         with lock:
             return self._data
@@ -289,6 +292,11 @@ class Server(ThreadingMixIn, HTTPServer, Thread):
             return self._history
 
     def save_history(self):
+        """Saves current data state in :attr:`history`"""
+        # expand callable values
+        with lock:
+            self._data = {k: (v if not callable(v) else v())
+                          for k, v in self.data.items()}
         self._history.append(dict(self.data))
 
     @property
