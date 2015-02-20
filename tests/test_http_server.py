@@ -4,7 +4,7 @@ from hamcrest import *
 from nose.tools import assert_raises
 
 from httptestserver import (HttpTestServer, HttpsTestServer, Server,
-                            http_server, https_server)
+                            http_server, https_server, HttpResponse)
 import requests
 
 
@@ -246,14 +246,64 @@ class HttpErrorsMixin(object):
         assert_that(r.headers, has_entry('key', 'value, value'))
 
 
+class HooksTestMixin(object):
+    def test_it_should_register_hooks(self):
+        fun = lambda _: None
+        self.server.register_hook('before_request', fun)
+        self.server.register_hook('before_response', fun)
+        self.server.register_hook('after_response', fun)
+        self.server.register_hook('after_request', fun)
+
+        assert_that(self.server.hooks, is_({
+            'before_request': fun,
+            'before_response': fun,
+            'after_response': fun,
+            'after_request': fun,
+        }))
+
+    def test_it_should_reject_non_callable_hooks(self):
+        with assert_raises(ValueError):
+            self.server.register_hook('before_request', None)
+
+    def test_it_should_run_before_request_hook(self):
+        self.it_should_call_hook('before_request')
+
+    def test_it_should_run_before_response_hook(self):
+        self.it_should_call_hook('before_response', instance_of(dict))
+
+    def test_it_should_run_after_response_hook(self):
+        self.it_should_call_hook(
+            'after_response', instance_of(dict), instance_of(HttpResponse))
+
+    def test_it_should_run_after_request_hook(self):
+        self.it_should_call_hook(
+            'after_request', instance_of(dict), instance_of(HttpResponse))
+
+    def it_should_call_hook(self, name, *args):
+        instance = {'called': False, 'args': None}
+
+        def hook(*passed_args, **kwargs):
+            instance['called'] = True
+            instance['args'] = passed_args
+
+        self.server.register_hook(name, hook)
+
+        self.request('GET', self.default_url)
+
+        assert_that(instance, has_entries({
+            'called': True,
+            'args': has_items(*args),
+        }))
+
+
 # actual test implementations
 class TestHttp(HttpTestServer, ServerTestMixin, DataMixin, MethodsMixin,
-               ConnectionMixin, HttpErrorsMixin):
+               ConnectionMixin, HttpErrorsMixin, HooksTestMixin):
     """Test http server"""
 
 
 class TestHttps(HttpsTestServer, ServerTestMixin, DataMixin,
-                MethodsMixin, ConnectionMixin, HttpErrorsMixin):
+                MethodsMixin, ConnectionMixin, HttpErrorsMixin, HooksTestMixin):
     """Test https server"""
 
 

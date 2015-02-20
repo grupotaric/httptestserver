@@ -86,13 +86,18 @@ class Handler(BaseHTTPRequestHandler):
 
         # Read and process a http request
         # Create and send a http response
+        self.server.process_hook('before_request')
         self.update_state()        # Save server current state
         self.read_content()        # Read request body
         self.save_history()        # Save current state in history
-        self.process_request()     # Process received request
-        self.send_headers()        # Send response headers
-        self.send_content()        # Send response body
-        self.finish_request()      # Finish headers and response
+
+        self.server.process_hook('before_response', self.server.data)
+        response = self.process_request()  # Process received request
+        self.server.process_hook('after_response', self.server.data, response)
+
+        self.send_http_response(response)  # send status, headers and content
+        self.server.process_hook('after_request', self.server.data, response)
+        self.finish_request()  # Optionally reset server state
 
     def read_content(self):
         # Read request body (if any)
@@ -108,25 +113,35 @@ class Handler(BaseHTTPRequestHandler):
             log.info('Server sleeping for: %d s', timeout)
             time.sleep(timeout)
 
-    def send_headers(self):
-        # Send status code
-        status_code = self.server.data.get('response_status', 200)
-        log.info('Server returning status code %d', status_code)
-        self.send_response(status_code)
+        return self.create_response()
 
-        # Add user defined headers
-        headers = self.server.data.get('response_headers', ())
+    def create_response(self):
+        return HttpResponse(
+            status=self.server.data.get('response_status', 200),
+            headers=self.server.data.get('response_headers', ()),
+            content=self.server.data.get('response_content', None),
+        )
+
+    def send_http_response(self, response):
+        self.send_status(response.status)
+        self.send_headers(response.headers)
+        self.send_content(response.content)
+
+    def send_status(self, status):
+        log.info('Server returning status code %d', status)
+        self.send_response(status)
+
+    def send_headers(self, headers):
         for field, content in iteritems(headers):
             log.info('Server setting response header %s: %s', field, content)
             self.send_header(field, content)
 
         self.end_headers()
 
-    def send_content(self):
-        response_content = self.server.data.get('response_content')
-        if response_content is not None:
-            log.info('Server sending content: %d bytes', len(response_content))
-            self.wfile.write(response_content)
+    def send_content(self, content):
+        if content is not None:
+            log.info('Server sending content: %d bytes', len(content))
+            self.wfile.write(content)
 
     def finish_request(self):
         # Avoid same behaviour on next request
@@ -279,11 +294,54 @@ class Server(ThreadingMixIn, HTTPServer, Thread):
         with lock:
             return self._data
 
+    @property
+    def hooks(self):
+        """Gives access to server hooks
+
+        Hooks will be called at different moments of the http processing,
+        exposing handler data at the point and allowing to override response
+        at will.
+
+        Available hooks:
+
+        before_request
+            Arguments: ``()`` Called at the start of processing a new request.
+
+        before_response
+            Arguments: ``(request)`` Called after request has been parsed but not sent.
+
+        after_response
+            Arguments: ``(request, response)`` Called after the response has
+            been created but no sent.
+
+        after_request
+            Arguments: ``(request, response)`` Called after a response has
+            been sent back to the client.
+
+        Return value is be ignored.
+        """
+        with lock:
+            return self._hooks
+
+    def register_hook(self, name, function):
+        if not callable(function):
+            raise ValueError('{} is not callable'.format(function))
+        self.hooks[name] = function
+
+    def process_hook(self, name, *args):
+        function = self.hooks.get(name)
+        if function:
+            return function(*args)
+
     def reset(self):
-        """Resets all server data in :attr:`data`"""
+        """Resets all server data
+
+        This resets :attr:`data`, :attr:`history` and :attr:`hooks`.
+        """
         with lock:
             self._data = {}
             self._history = []
+            self._hooks = {}
 
     @property
     def history(self):
@@ -360,3 +418,10 @@ def https_server(*args, **kwargs):
     server = start_ssl_server(*args, **kwargs)
     yield server
     server.stop()
+
+
+class HttpResponse(object):
+    def __init__(self, status, headers, content):
+        self.status = status
+        self.headers = headers
+        self.content = content
