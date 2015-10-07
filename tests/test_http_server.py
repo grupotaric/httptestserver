@@ -335,3 +335,21 @@ class TestContexts(object):
 
         time.sleep(0.01)
         assert_that(server.is_alive(), is_(False))
+
+
+class TestHttpServer(object):
+    """Test http server class methods"""
+    def test_it_should_have_no_initial_data(self):
+        assert_that(self.server, has_property('data', is_({})))
+
+    def test_it_should_have_no_initial_history(self):
+        assert_that(self.server, has_property('history', is_([])))
+
+    def test_it_should_have_no_initial_hooks(self):
+        assert_that(self.server, has_property('hooks', is_({})))
+
+    def test_it_should_have_default_http_scheme(self):
+        assert_that(self.server, has_property('scheme', is_('http')))
+
+    def setup(self):
+        self.server = Server('0.0.0.0', 0)

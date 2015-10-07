@@ -217,6 +217,7 @@ class Server(ThreadingMixIn, HTTPServer, Thread):
         HTTPServer.__init__(self, (host, port), handler)
         self._data = {}
         self._history = []
+        self._hooks = {}
         self.daemon = True  # finish along with parent process
         self.scheme = scheme
 
