@@ -4,6 +4,13 @@ Changes
 List of all the changes throughout different versions.
 
 .. changelog::
+    :version: 0.3.1
+    :released: 2015-10-07
+
+    Fixes error in http Server initialization
+
+
+.. changelog::
     :version: 0.3.0
     :released: 2014-02-20
 
